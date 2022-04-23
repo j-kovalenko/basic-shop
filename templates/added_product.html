@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<img src="{{ image }}" class="rounded float-start" alt={{ name }}, style="width: 525px; float: left; margin-right: 25px;">
+<div style="text-align: left; margin-top: 100px;">
+	<h2 style="margin-bottom: 50px;">{{ name }}</h2>
+	<p description>
+	{{ description }}
+	</p>
+	<p><b>Состав:</b> {{ composition }}</p>
+</div>
+
+<h3>Цена: {{ price }}$</h3>
+
+<form action="/process_data/" method="POST">
+    <!-- скрытый параметр -->
+    <input type="hidden" name="index" value={{ id }}>
+    <input type="submit" class="btn btn-primary" value="Добавить в корзину" style="margin-top: 30px;">
+</form>
+
+
+<a href={{ past }}>
+<button type="button" class="btn btn-outline-primary" style="position: static; margin-top: 5px;">Назад</button>
+</a>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<img src="{{ item["image"] }}" class="rounded float-start" alt={{ item["name"] }}, style="width: 525px; float: left; margin-right: 25px;">
+<div style="text-align: left; margin-top: 100px;">
+	<h2 style="margin-bottom: 50px;">{{ item["name"] }}</h2>
+	<p description>
+	{{ item["description"] }}
+	</p>
+	<p><b>Состав:</b> {{ item["composition"] }}</p>
+</div>
+
+<h3>Цена: {{ item["price"] }}$</h3>
+
+{% if item["incart"] == 0 %}
+	<form action="/process_data/" method="POST">
+		<!-- скрытый параметр -->
+		<input type="hidden" name="index" value={{ item["id"] }}>
+		<input type="submit" class="btn btn-primary" value="Добавить в корзину" style="margin-top: 30px;">
+	</form>
+{% else %}
+  <div class="btn-group" role="group" aria-label="Basic outlined example">
+      <button type="button" class="btn btn-outline-primary">-</button>
+      <form action="/process_data/" method="POST">
+        <!-- скрытый параметр -->
+        <input type="hidden" name="index" value={{ item["id"] }}delete>
+        <input type="submit" class="btn btn-danger" value="Удалить из корзины" style="margin-top: 30px;">
+            </form>
+      <button type="button" class="btn btn-outline-primary">+</button>
+  </div>
+{% endif %}
+
+<a href={{ past }}>
+<button type="button" class="btn btn-outline-primary" style="position: static; margin-top: 5px;">Назад</button>
+</a>
+{% endblock %}

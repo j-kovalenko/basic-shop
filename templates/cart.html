@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card" >
+    <div class="card-header">
+        Корзина
+    </div>
+    <ul class="list-group list-group-flush">
+        {% if total == 0 %}
+            <li class="list-group-item">Ваша корзина пуста</li>
+        {% else %}
+            {% for item in cart %}
+                <li class="list-group-item">
+                    {{ items[item]["name"] }}
+                    <img src={{ items[item]["image"] }} class="card-img-top" style=" float: left; width: 169px; height: 144px; padding-right: 25px;" alt="...">
+                    <form action="/process_data/" method="POST">
+                        <!-- скрытый параметр -->
+                        <input type="hidden" name="index" value={{ items[item]["id"] }}delete>
+                        <input type="submit" class="btn btn-danger" value="Удалить из корзины" style="margin-top: 30px;">
+                    </form>
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+    <h4 style="text-align: right;">Итого: {{ total }}$</h4>
+</div>
+{% endblock %}
