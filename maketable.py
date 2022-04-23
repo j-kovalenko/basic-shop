@@ -1,5 +1,6 @@
 from data import db_session
-from data.items import Item
+from data.hoodies import Hoodie
+from data.tshirts import Tshirt
 
 ITEMS = {
     "turquoise_jacket": {
@@ -94,14 +95,25 @@ ITEMS = {
 
 db_session.global_init("db/shop.db")
 for clo in ITEMS:
-    item = Item()
-    item.name = ITEMS[clo]["name"]
-    item.description = ITEMS[clo]["description"]
-    item.image = ITEMS[clo]["image"]
-    item.composition = ITEMS[clo]["composition"]
-    item.name_id = ITEMS[clo]["id"]
-    item.price = ITEMS[clo]["price"]
-    item.type = ITEMS[clo]["type"]
-    db_sess = db_session.create_session()
-    db_sess.add(item)
-    db_sess.commit()
+    if ITEMS[clo]["type"] == "hoodies":
+        item = Hoodie()
+        item.name = ITEMS[clo]["name"]
+        item.description = ITEMS[clo]["description"]
+        item.image = ITEMS[clo]["image"]
+        item.composition = ITEMS[clo]["composition"]
+        item.name_id = ITEMS[clo]["id"]
+        item.price = ITEMS[clo]["price"]
+        db_sess = db_session.create_session()
+        db_sess.add(item)
+        db_sess.commit()
+    elif ITEMS[clo]["type"] == "tshirts":
+        item = Tshirt()
+        item.name = ITEMS[clo]["name"]
+        item.description = ITEMS[clo]["description"]
+        item.image = ITEMS[clo]["image"]
+        item.composition = ITEMS[clo]["composition"]
+        item.name_id = ITEMS[clo]["id"]
+        item.price = ITEMS[clo]["price"]
+        db_sess = db_session.create_session()
+        db_sess.add(item)
+        db_sess.commit()

@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, session, make_response
 from data import db_session
+from data.hoodies import Hoodie
+from data.tshirts import Tshirt
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -8,7 +10,7 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 # cart1 = []
 
 total = 0
-db_sess = db_session.create_session()
+# db_sess = db_session.create_session()
 ITEMS = {
     "turquoise_jacket": {
         "name": "Бирюзовая кофта",
@@ -156,48 +158,18 @@ def hoodies():
     return render_template('hoodies.html', name=page_name)
 
 
-@app.route('/hoodies/turquoise_jacket')
-def turquoise_jacket():
-    item = ITEMS["turquoise_jacket"]
-    page_name = item["name"]
-    past = f"../hoodies"
-    return render_template('product.html', item=item, name=page_name, past=past)
+@app.route('/<type>/<good>')
+def goods_page(type, good):
+    db_session.global_init("db/shop.db")
+    if type == 'hoodies':
+        db_sess = db_session.create_session()
+        item = db_sess.query(Hoodie).filter(Hoodie.name_id == good).first()
+        print(item)
+        print(item.name_id)
+        page_name = item.name
+        print(item, item.name_id)
+    past = f"../{type}"
 
-
-@app.route('/hoodies/emoji')
-def emoji_hoodie():
-    item = ITEMS["emoji_hoodie"]
-    page_name = item["name"]
-    past = f"../hoodies"
-    return render_template('product.html', item=item, name=page_name, past=past)
-
-
-@app.route('/hoodies/peachy')
-def peachy_hoodie():
-    item = ITEMS["peachy_hoodie"]
-    page_name = item["name"]
-    past = f"../hoodies"
-    return render_template('product.html', item=item, name=page_name, past=past)
-
-
-@app.route('/hoodies/turquoise')
-def turquoise_hoodie():
-    item = ITEMS["turquoise_hoodie"]
-    page_name = item["name"]
-    past = f"../hoodies"
-    return render_template('product.html', item=item, name=page_name, past=past)
-
-@app.route('/tshirts')
-def tshirts():
-    page_name = "Каталог футболок"
-    return render_template('tshirts.html', name=page_name)
-
-
-@app.route('/tshirts/blue')
-def blue_polo():
-    item = ITEMS["blue_polo"]
-    page_name = item["name"]
-    past = f"../tshirts"
     return render_template('product.html', item=item, name=page_name, past=past)
 
 
