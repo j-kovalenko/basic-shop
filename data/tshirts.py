@@ -13,3 +13,4 @@ class Tshirt(SqlAlchemyBase):
     composition = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     name_id = sqlalchemy.Column(sqlalchemy.String, nullable=True, unique=True)
     price = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    unique_id = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, unique=True)

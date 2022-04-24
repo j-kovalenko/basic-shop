@@ -11,23 +11,10 @@
 
 <h3>Цена: {{ item.price }}$</h3>
 
-<!--{% if item["incart"] == 0 %}-->
-<!--	<form action="/process_data/" method="POST">-->
-<!--		&lt;!&ndash; скрытый параметр &ndash;&gt;-->
-<!--		<input type="hidden" name="index" value={{ item.name_id }}>-->
-<!--		<input type="submit" class="btn btn-primary" value="Добавить в корзину" style="margin-top: 30px;">-->
-<!--	</form>-->
-<!--{% else %}-->
-<!--  <div class="btn-group" role="group" aria-label="Basic outlined example">-->
-<!--      <button type="button" class="btn btn-outline-primary">-</button>-->
-<!--      <form action="/process_data/" method="POST">-->
-<!--        &lt;!&ndash; скрытый параметр &ndash;&gt;-->
-<!--        <input type="hidden" name="index" value={{ item.name_id }}delete>-->
-<!--        <input type="submit" class="btn btn-danger" value="Удалить из корзины" style="margin-top: 30px;">-->
-<!--            </form>-->
-<!--      <button type="button" class="btn btn-outline-primary">+</button>-->
-<!--  </div>-->
-<!--{% endif %}-->
+<form method="post">
+    <input type="hidden" name="add" value="add">
+    <input type="submit" class="btn btn-success" value="Добавить">
+</form>
 
 <a href={{ past }}>
 <button type="button" class="btn btn-outline-primary" style="position: static; margin-top: 5px;">Назад</button>

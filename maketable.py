@@ -60,7 +60,7 @@ ITEMS = {
     },
     "white_tshirt": {
         "name": "Белая футболка",
-        "image": "https://miakademi.com.tr/wp-content/uploads/2019/03/tshirt-2-460x460.jpg",
+        "image": "https://miakademi.com.tr/wp-content/uploads/2019/03/tshirt-2.jpg",
         "description": "Белая футболка, сделанная из натурального хлопка и бережно отшитое швеями",
         "composition": "100% хлопок",
         "type": "tshirts",
