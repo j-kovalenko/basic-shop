@@ -26,7 +26,9 @@ def cart():
 @app.route('/hoodies')
 def hoodies():
     page_name = "Каталог кофт"
-    return render_template('hoodies.html', name=page_name)
+    db_session.global_init("db/shop.db")
+    db_sess = db_session.create_session()
+    return render_template('section.html', name=page_name, db_sess=db_sess, sect=Hoodie)
 
 
 @app.route('/<type>/<good>')
@@ -49,9 +51,12 @@ def goods_page(type, good):
 @app.route('/tshirts')
 def tshirts():
     page_name = "Каталог футболок"
-    return render_template('tshirts.html', name=page_name)
+    db_session.global_init("db/shop.db")
+    db_sess = db_session.create_session()
+    return render_template('section.html', name=page_name, db_sess=db_sess, sect=Tshirt)
 
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
     db_session.global_init("db/shop.db")
+    print(Hoodie.__table__.name)
