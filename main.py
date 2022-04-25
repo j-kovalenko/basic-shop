@@ -21,7 +21,12 @@ def index():
 @app.route('/cart')
 def cart():
     page_name = "Корзина"
-    return render_template('cart.html', name=page_name, items=ITEMS, cart=session['user_cart'], total=total)
+    cart = list(session.get('cart', {}).keys())
+    total = session.get('total', 0)
+    db_session.global_init("db/shop.db")
+    db_sess = db_session.create_session()
+    return render_template('cart.html', name=page_name, cart=cart, total=total, hoodies=hoodies, tshirts=tshirts,
+                           db_sess=db_sess, Hoodie=Hoodie, Tshirt=Tshirt)
 
 
 @app.route('/hoodies')
