@@ -93,18 +93,18 @@ def test():
         # session.pop('testcart', None)
         return render_template('test.html')
     db_session.global_init("db/shop.db")
-    try:
-        db_sess = db_session.create_session()
-        if type == 'hoodies':
-            item = db_sess.query(Hoodie).filter(Hoodie.name_id == good).first()
-            page_name = item.name
-        elif type == 'tshirts':
-            item = db_sess.query(Tshirt).filter(Tshirt.name_id == good).first()
-            page_name = item.name
-    except AttributeError:
-        return 'такого наименования нет'
-    past = f"../{type}"
-    return render_template('product.html', item=item, name=page_name, past=past)
+    # try:
+    #     db_sess = db_session.create_session()
+    #     if type == 'hoodies':
+    #         item = db_sess.query(Hoodie).filter(Hoodie.name_id == good).first()
+    #         page_name = item.name
+    #     elif type == 'tshirts':
+    #         item = db_sess.query(Tshirt).filter(Tshirt.name_id == good).first()
+    #         page_name = item.name
+    # except AttributeError:
+    #     return 'такого наименования нет'
+    # past = f"../{type}"
+    # return render_template('product.html', item=item, name=page_name, past=past)
 
 
 @app.route('/tshirts')
