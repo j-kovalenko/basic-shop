@@ -3,7 +3,7 @@ from data.hoodies import Hoodie
 from data.tshirts import Tshirt
 
 ITEMS = {
-    "turquoise_jacket": {
+    "blue": {
         "name": "Бирюзовая кофта",
         "image": "https://miakademi.com.tr/wp-content/uploads/2019/03/hoodie-with-zipper-2.jpg",
         "description": "Кофта с застежкой, сделанная из натурального хлопка и бережно отшитая швеями",
@@ -14,7 +14,7 @@ ITEMS = {
         "price": 60,
         "incart": 0
 },
-    "emoji_hoodie": {
+    "emoji": {
         "name": "Худи с эмоджи",
         "image": "https://miakademi.com.tr/wp-content/uploads/2019/03/hoodie-with-logo-2.jpg",
         "description": "Худи с капюшоном, сделанное из натурального хлопка и бережно отшитое швеями",
@@ -25,7 +25,7 @@ ITEMS = {
         "price": 75,
         "incart": 0
     },
-    "peachy_hoodie": {
+    "peachy": {
         "name": "Персиковое худи",
         "image": "https://miakademi.com.tr/wp-content/uploads/2019/03/hoodie-2.jpg",
         "description": "Худи с капюшоном, сделанное из натурального хлопка и бережно отшитое швеями",
@@ -36,7 +36,7 @@ ITEMS = {
         "price": 75,
         "incart": 0
     },
-    "turquoise_hoodie": {
+    "turquoise": {
         "name": "Бирюзовое худи",
         "image": "https://miakademi.com.tr/wp-content/uploads/2019/03/hoodie-green-1.jpg",
         "description": "Худи с капюшоном, сделанное из натурального хлопка и бережно отшитое швеями",
@@ -103,6 +103,10 @@ for clo in ITEMS:
         item.composition = ITEMS[clo]["composition"]
         item.name_id = ITEMS[clo]["id"]
         item.price = ITEMS[clo]["price"]
+        # if item.name_id == 'turquoise_jacket':
+        #     item.unique_id = 'turquoise-jacket'
+        # else:
+        #     item.unique_id = item.name_id + '-hoodie'
         db_sess = db_session.create_session()
         db_sess.add(item)
         db_sess.commit()
@@ -114,6 +118,7 @@ for clo in ITEMS:
         item.composition = ITEMS[clo]["composition"]
         item.name_id = ITEMS[clo]["id"]
         item.price = ITEMS[clo]["price"]
+        # item.unique_id = item.name_id + '-tshirt'
         db_sess = db_session.create_session()
         db_sess.add(item)
         db_sess.commit()
