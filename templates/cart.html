@@ -8,20 +8,10 @@
         {% if total == 0 %}
             <li class="list-group-item">Ваша корзина пуста</li>
         {% else %}
-            {% for item1 in cart %}
+            {% for item in cart %}
                 <li class="list-group-item">
-                    {%if item1 in hoodies%}
-                        {% set item = db_sess.query(Hoodie).filter(Hoodie.unique_id == item1).first() %}
-                    {%elif item1 in tshirts%}
-                        {% set item = db_sess.query(Hoodie).filter(Tshirt.unique_id == item1).first() %}
-                    {%endif%}
                     {{ item.name }}
                     <img src={{ item.image }} class="card-img-top" style=" float: left; width: 169px; height: 144px; padding-right: 25px;" alt="...">
-<!--                    <form action="/process_data/" method="POST">-->
-<!--                        &lt;!&ndash; скрытый параметр &ndash;&gt;-->
-<!--                        <input type="hidden" name="index" value={{ items[item]["id"] }}delete>-->
-<!--                        <input type="submit" class="btn btn-danger" value="Удалить из корзины" style="margin-top: 30px;">-->
-<!--                    </form>-->
                 </li>
             {% endfor %}
         {% endif %}
