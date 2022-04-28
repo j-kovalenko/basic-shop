@@ -48,13 +48,11 @@ def cart():
             if cart_item in cart:
                 cart.remove(cart_item)
             else:
-                return f"Товар {cart_item[0]} уже не в корзине"
+                return render_template("message.html", text=f"Товар {cart_item[0]} уже не в корзине")
             session['cart'] = cart
             total = session.get('total', 0)
             total -= int(resp[2])
             session['total'] = total
-        # except Exception as e:
-        #     print(e)
         return redirect(f'/cart')
 
 
@@ -84,7 +82,7 @@ def goods_page(type, good):
             item = db_sess.query(Acc).filter(Acc.name_id == good).first()
             page_name = item.name
     except AttributeError:
-        return 'такого наименования нет'
+        return render_template("message.html", text='Такого наименования нет')
     if request.method == 'GET':
         past = f"../{type}"
         return render_template('product.html', item=item, name=page_name, past=past, cart=cart)
@@ -104,7 +102,7 @@ def goods_page(type, good):
             if [item.name_id, item.__table__.name] in cart:
                 cart.remove([item.name_id, item.__table__.name])
             else:
-                return f"Товар {item.name} уже не в корзине"
+                return render_template("message.html", text=f"Товар {item.name} уже не в корзине")
             session['cart'] = cart
             total = session.get('total', 0)
             total -= item.price
