@@ -11,10 +11,17 @@
 
 <h3>Цена: {{ item.price }}$</h3>
 
-<form method="post">
-    <input type="hidden" name="add" value="add">
-    <input type="submit" class="btn btn-success" value="Добавить">
-</form>
+{%if [item.name_id, item.__table__.name] not in cart%}
+	<form method="post">
+		<input type="hidden" name="action" value="add">
+		<input type="submit" class="btn btn-success" value="Добавить">
+	</form>
+{%else%}
+	<form method="post">
+		<input type="hidden" name="action" value="delete">
+		<input type="submit" class="btn btn-danger" value="Удалить">
+	</form>
+{%endif%}
 
 <a href={{ past }}>
 <button type="button" class="btn btn-outline-primary" style="position: static; margin-top: 5px;">Назад</button>

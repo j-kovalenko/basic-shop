@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="card" >
+<div class="card" style="margin-top: 50px;">
     <div class="card-header">
         Корзина
     </div>
@@ -10,13 +10,14 @@
         {% else %}
             {% for item in cart %}
                 <li class="list-group-item">
-                    {{ items[item]["name"] }}
-                    <img src={{ items[item]["image"] }} class="card-img-top" style=" float: left; width: 169px; height: 144px; padding-right: 25px;" alt="...">
-                    <form action="/process_data/" method="POST">
-                        <!-- скрытый параметр -->
-                        <input type="hidden" name="index" value={{ items[item]["id"] }}delete>
-                        <input type="submit" class="btn btn-danger" value="Удалить из корзины" style="margin-top: 30px;">
-                    </form>
+                    <p style="display:inline-block;">{{ item.name }}</p>
+                    	<form method="post" style="float: right;">
+                            {%set pr = item.price | string%}
+                            {%set x = '-'.join([item.name_id,item.__table__.name,pr])%}
+                            <input type="hidden" name="delete" value={{ x }}>
+                            <input type="submit" class="btn btn-danger" value="Удалить">
+                        </form>
+                    <img src={{ item.image }} class="card-img-top" style=" float: left; width: 169px; height: 144px; padding-right: 25px;" alt="...">
                 </li>
             {% endfor %}
         {% endif %}
