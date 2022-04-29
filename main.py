@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, make_response, redirect
+from flask import Flask, render_template, request, session, make_response, redirect, url_for
 
 import data.tshirts
 from data import db_session
@@ -12,47 +12,91 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 db_session.global_init("db/shop.db")
 
 
+
 @app.route('/')
 @app.route('/index')
 def index():
     page_name = "Домашняя страница"
-    # session.pop('cart', None)
-    # session.pop('total', None)
     return render_template('index.html', name=page_name)
+
+
+@app.route('/delhist')
+def delhist():
+    session.pop('cart', None)
+    session.pop('total', None)
+    return 'deleted'
 
 
 @app.route('/cart', methods=['POST', 'GET'])
 def cart():
+    db_session.global_init("db/shop.db")
+    db_sess = db_session.create_session()
     if request.method == 'GET':
         page_name = "Корзина"
-        db_session.global_init("db/shop.db")
-        db_sess = db_session.create_session()
-        cart = session.get('cart', [])
+        cart = session.get('cart', {})
         user_cart = []
         for it in cart:
-            if it[1] == 'hoodies':
-                item = db_sess.query(Hoodie).filter(Hoodie.name_id == it[0]).first()
-            elif it[1] == 'tshirts':
-                item = db_sess.query(Tshirt).filter(Tshirt.name_id == it[0]).first()
-            elif it[1] == 'accessories':
-                item = db_sess.query(Acc).filter(Acc.name_id == it[0]).first()
+            if cart[it]["type"] == 'hoodies':
+                item = db_sess.query(Hoodie).filter(Hoodie.name_id == it).first()
+            elif cart[it]["type"] == 'tshirts':
+                item = db_sess.query(Tshirt).filter(Tshirt.name_id == it).first()
+            elif cart[it]["type"] == 'accessories':
+                item = db_sess.query(Acc).filter(Acc.name_id == it).first()
             user_cart.append(item)
         total = session.get('total', 0)
         # print(user_cart)
-        return render_template('cart.html', name=page_name, cart=user_cart, total=total)
+        return render_template('cart.html', name=page_name, cart=user_cart, sess_cart=cart, total=total)
     elif request.method == 'POST':
-        if request.form['delete']:
-            resp = request.form['delete'].split('-')
-            cart_item = [resp[0], resp[1]]
-            cart = session.get('cart', [])
-            if cart_item in cart:
-                cart.remove(cart_item)
-            else:
-                return render_template("message.html", text=f"Товар {cart_item[0]} уже не в корзине")
-            session['cart'] = cart
+        act = request.form['action'][-3:]
+        resp = request.form['action'][:-3]
+        if act == 'del':
+            cart = session.get('cart', {})
+            if cart[resp]["type"] == 'hoodies':
+                item = db_sess.query(Hoodie).filter(Hoodie.name_id == resp).first()
+            elif cart[resp]["type"] == 'tshirts':
+                item = db_sess.query(Tshirt).filter(Tshirt.name_id == resp).first()
+            elif cart[resp]["type"] == 'accessories':
+                item = db_sess.query(Acc).filter(Acc.name_id == resp).first()
             total = session.get('total', 0)
-            total -= int(resp[2])
+            total -= item.price * cart[resp]["amount"]
             session['total'] = total
+            if resp in cart:
+                del cart[resp]
+            else:
+                return render_template("message.html", text=f"Товар {item.name} уже не в корзине")
+            session['cart'] = cart
+        if act == 'add':
+            cart = session.get('cart', {})
+            if cart[resp]["type"] == 'hoodies':
+                item = db_sess.query(Hoodie).filter(Hoodie.name_id == resp).first()
+            elif cart[resp]["type"] == 'tshirts':
+                item = db_sess.query(Tshirt).filter(Tshirt.name_id == resp).first()
+            elif cart[resp]["type"] == 'accessories':
+                item = db_sess.query(Acc).filter(Acc.name_id == resp).first()
+            if resp in cart:
+                cart[resp]["amount"] += 1
+                total = session.get('total', 0)
+                total += item.price
+                session['total'] = total
+                session['cart'] = cart
+            else:
+                return render_template("message.html", text=f"Товар {item.name} уже не в корзине")
+        if act == 'rem':
+            cart = session.get('cart', {})
+            if cart[resp]["type"] == 'hoodies':
+                item = db_sess.query(Hoodie).filter(Hoodie.name_id == resp).first()
+            elif cart[resp]["type"] == 'tshirts':
+                item = db_sess.query(Tshirt).filter(Tshirt.name_id == resp).first()
+            elif cart[resp]["type"] == 'accessories':
+                item = db_sess.query(Acc).filter(Acc.name_id == resp).first()
+            if resp in cart:
+                cart[resp]["amount"] -= 1
+                total = session.get('total', 0)
+                total -= item.price
+                session['total'] = total
+                session['cart'] = cart
+            else:
+                return render_template("message.html", text=f"Товар {item.name} уже не в корзине")
         return redirect(f'/cart')
 
 
@@ -69,7 +113,7 @@ def hoodies():
 @app.route('/<type>/<good>', methods=['POST', 'GET'])
 def goods_page(type, good):
     db_session.global_init("db/shop.db")
-    cart = session.get('cart', [])
+    cart = session.get('cart', {})
     try:
         db_sess = db_session.create_session()
         if type == 'hoodies':
@@ -89,8 +133,10 @@ def goods_page(type, good):
     elif request.method == 'POST':
         # try:
         if request.form['action'] == 'add':
-            cart = session.get('cart', [])
-            cart += [[item.name_id, item.__table__.name]]
+            cart = session.get('cart', {})
+            cart[item.name_id] = {}
+            cart[item.name_id]["type"] = item.__table__.name
+            cart[item.name_id]["amount"] = 1
             session['cart'] = cart
             total = session.get('total', 0)
             total += item.price
@@ -98,9 +144,9 @@ def goods_page(type, good):
             # print(cart)
             print(session)
         if request.form['action'] == 'delete':
-            cart = session.get('cart', [])
-            if [item.name_id, item.__table__.name] in cart:
-                cart.remove([item.name_id, item.__table__.name])
+            cart = session.get('cart', {})
+            if item.name_id in cart:
+                del cart[item.name_id]
             else:
                 return render_template("message.html", text=f"Товар {item.name} уже не в корзине")
             session['cart'] = cart
@@ -133,5 +179,4 @@ def accessories():
 if __name__ == '__main__':
     # app.run(port=8080, host='127.0.0.1')
     app.run()
-    db_session.global_init("db/shop.db")
-    # print(Hoodie.__table__.name)
+    # db_session.global_init("db/shop.db")

@@ -11,7 +11,7 @@
 
 <h3>Цена: {{ item.price }}$</h3>
 
-{%if [item.name_id, item.__table__.name] not in cart%}
+{%if item.name_id not in cart%}
 	<form method="post">
 		<input type="hidden" name="action" value="add">
 		<input type="submit" class="btn btn-success" value="Добавить">
