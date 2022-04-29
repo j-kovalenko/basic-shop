@@ -13,6 +13,7 @@
                     <p style="display:inline-block;">{{ item.name }}</p>
                     	<form method="post" style="float: right;">
                             {%set pr = item.price | string%}
+<!--                            {%set cnt = item.price | string%}-->
                             {%set x = '-'.join([item.name_id,item.__table__.name,pr])%}
                             <input type="hidden" name="delete" value={{ x }}>
                             <input type="submit" class="btn btn-danger" value="Удалить">

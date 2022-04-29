@@ -43,7 +43,7 @@ def cart():
     elif request.method == 'POST':
         if request.form['delete']:
             resp = request.form['delete'].split('-')
-            cart_item = [resp[0], resp[1]]
+            cart_item = [resp[0], resp[1], 1]
             cart = session.get('cart', [])
             if cart_item in cart:
                 cart.remove(cart_item)
@@ -90,7 +90,7 @@ def goods_page(type, good):
         # try:
         if request.form['action'] == 'add':
             cart = session.get('cart', [])
-            cart += [[item.name_id, item.__table__.name]]
+            cart += [[item.name_id, item.__table__.name, 1]]
             session['cart'] = cart
             total = session.get('total', 0)
             total += item.price
@@ -99,8 +99,8 @@ def goods_page(type, good):
             print(session)
         if request.form['action'] == 'delete':
             cart = session.get('cart', [])
-            if [item.name_id, item.__table__.name] in cart:
-                cart.remove([item.name_id, item.__table__.name])
+            if [item.name_id, item.__table__.name, 1] in cart:
+                cart.remove([item.name_id, item.__table__.name, 1])
             else:
                 return render_template("message.html", text=f"Товар {item.name} уже не в корзине")
             session['cart'] = cart
