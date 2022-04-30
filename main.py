@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, session, make_response, redirect, url_for
+from flask import Flask, render_template, request, session, redirect
 
-import data.tshirts
 from data import db_session
 from data.hoodies import Hoodie
 from data.tshirts import Tshirt
@@ -20,12 +19,6 @@ def index():
     return render_template('index.html', name=page_name)
 
 
-@app.route('/delhist')
-def delhist():
-    session.pop('cart', None)
-    session.pop('total', None)
-    return 'deleted'
-
 @app.route('/cart2')
 def cart2():
     db_session.global_init("db/shop.db")
@@ -43,7 +36,6 @@ def cart2():
                 item = db_sess.query(Acc).filter(Acc.name_id == it).first()
             user_cart.append(item)
         total = session.get('total', 0)
-        # print(user_cart)
     return render_template('cart2.html', name=page_name, cart=user_cart, sess_cart=cart, total=total)
 
 
@@ -64,7 +56,6 @@ def cart():
                 item = db_sess.query(Acc).filter(Acc.name_id == it).first()
             user_cart.append(item)
         total = session.get('total', 0)
-        # print(user_cart)
         return render_template('cart2.html', name=page_name, cart=user_cart, sess_cart=cart, total=total)
     elif request.method == 'POST':
         act = request.form['action'][-3:]
@@ -151,7 +142,6 @@ def goods_page(type, good):
         past = f"../{type}"
         return render_template('product.html', item=item, name=page_name, past=past, cart=cart)
     elif request.method == 'POST':
-        # try:
         if request.form['action'] == 'add':
             cart = session.get('cart', {})
             cart[item.name_id] = {}
@@ -161,8 +151,6 @@ def goods_page(type, good):
             total = session.get('total', 0)
             total += item.price
             session['total'] = total
-            # print(cart)
-            print(session)
         if request.form['action'] == 'delete':
             cart = session.get('cart', {})
             if item.name_id in cart:
@@ -173,8 +161,6 @@ def goods_page(type, good):
             total = session.get('total', 0)
             total -= item.price
             session['total'] = total
-        # except Exception as e:
-        #     print(e)
         return redirect(f'/{type}/{good}')
 
 
@@ -199,4 +185,3 @@ def accessories():
 if __name__ == '__main__':
     # app.run(port=8080, host='127.0.0.1')
     app.run()
-    # db_session.global_init("db/shop.db")
