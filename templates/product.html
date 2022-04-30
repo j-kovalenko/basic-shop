@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<img src="{{ item["image"] }}" class="rounded float-start" alt={{ item["name"] }}, style="width: 525px; float: left; margin-right: 25px;">
-<div style="text-align: left; margin-top: 100px;">
+<img src="{{ item["image"] }}" class="rounded float-start" alt={{ item["name"] }}, id="product_image">
+<div id="item_desc">
 	<h2 style="margin-bottom: 50px;">{{ item["name"] }}</h2>
-	<p description>
+	<p>
 	{{ item.description }}
 	</p>
 	<p><b>Состав:</b> {{ item.composition }}</p>

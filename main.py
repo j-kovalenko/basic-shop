@@ -26,6 +26,26 @@ def delhist():
     session.pop('total', None)
     return 'deleted'
 
+@app.route('/cart2')
+def cart2():
+    db_session.global_init("db/shop.db")
+    db_sess = db_session.create_session()
+    if request.method == 'GET':
+        page_name = "Корзина"
+        cart = session.get('cart', {})
+        user_cart = []
+        for it in cart:
+            if cart[it]["type"] == 'hoodies':
+                item = db_sess.query(Hoodie).filter(Hoodie.name_id == it).first()
+            elif cart[it]["type"] == 'tshirts':
+                item = db_sess.query(Tshirt).filter(Tshirt.name_id == it).first()
+            elif cart[it]["type"] == 'accessories':
+                item = db_sess.query(Acc).filter(Acc.name_id == it).first()
+            user_cart.append(item)
+        total = session.get('total', 0)
+        # print(user_cart)
+    return render_template('cart2.html', name=page_name, cart=user_cart, sess_cart=cart, total=total)
+
 
 @app.route('/cart', methods=['POST', 'GET'])
 def cart():
@@ -45,7 +65,7 @@ def cart():
             user_cart.append(item)
         total = session.get('total', 0)
         # print(user_cart)
-        return render_template('cart.html', name=page_name, cart=user_cart, sess_cart=cart, total=total)
+        return render_template('cart2.html', name=page_name, cart=user_cart, sess_cart=cart, total=total)
     elif request.method == 'POST':
         act = request.form['action'][-3:]
         resp = request.form['action'][:-3]

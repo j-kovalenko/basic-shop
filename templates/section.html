@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Добрый день</h1>
+<!--<h1>Добрый день</h1>-->
 
 <div class="row row-cols-1 row-cols-md-2 g-4">
     {% for item in db_sess.query(sect).all(): %}
@@ -11,7 +11,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ item.name }}</h5>
                     <p class="card-text">Сделано из натурального хлопка с любовью</p>
-                    <a href={{ page }} class="btn btn-primary">Подробнее</a>
+                    <h4>{{ item.price }}$</h4>
+                    <a href={{ page }} class="btn btn-primary stretched-link">Подробнее</a>
                 </div>
             </div>
         </div>
