@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="card" style="margin-top: 50px;">
+<div class="card">
     <div class="card-header">
         Корзина
     </div>
@@ -10,15 +10,29 @@
         {% else %}
             {% for item in cart %}
                 <li class="list-group-item">
-                    <p style="display:inline-block;">{{ item.name }}</p>
+                    <p style="display:inline-block;">{{ item.name }} ({{sess_cart[item.name_id]["amount"]}})</p>
+<!--                    <p style="float: right;">Цена: {{sess_cart[item.name_id]["amount"] * item.price}}$</p>-->
+<!--                    <br>-->
                     	<form method="post" style="float: right;">
-                            {%set pr = item.price | string%}
-<!--                            {%set cnt = item.price | string%}-->
-                            {%set x = '-'.join([item.name_id,item.__table__.name,pr])%}
-                            <input type="hidden" name="delete" value={{ x }}>
+                            <input type="hidden" name="action" value={{ item.name_id }}del>
                             <input type="submit" class="btn btn-danger" value="Удалить">
                         </form>
-                    <img src={{ item.image }} class="card-img-top" style=" float: left; width: 169px; height: 144px; padding-right: 25px;" alt="...">
+                    	<form method="post" style="float: right;">
+                            <input type="hidden" name="action" value={{ item.name_id }}add>
+                            <input type="submit" class="btn btn-success" value="+">
+                        </form>
+                        {%if sess_cart[item.name_id]["amount"] > 1%}
+                            <form method="post" style="float: right;">
+                                <input type="hidden" name="action" value={{ item.name_id }}rem>
+                                <input type="submit" class="btn btn-warning" value="-">
+                            </form>
+                        {%else%}
+                            <form method="post" style="float: right;">
+                                <input type="hidden" name="action" value={{ item.name_id }}rem>
+                                <input type="submit" class="btn btn-warning" value="-" disabled>
+                            </form>
+                        {%endif%}
+                    <img src={{ item.image }} class="card-img-top" id="cart_image" alt={{item.name}}>
                 </li>
             {% endfor %}
         {% endif %}

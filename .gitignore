@@ -1,1 +1,4 @@
-data/__pycache__/*
+data/__pycache__/__all_models.cpython-39.pyc
+data/__pycache__/hoodies.cpython-39.pyc
+data/__pycache__/tshirts.cpython-39.pyc
+main.py.rej

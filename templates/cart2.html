@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container px-3 my-5 clearfix">
+    <!-- Shopping cart table -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Shopping Cart</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered m-0">
+                    <thead>
+                        <tr>
+                            <!-- Set columns width -->
+                            <th class="text-center py-3 px-4" style="min-width: 400px;">Product Name &amp; Details</th>
+                            <th class="text-right py-3 px-4" style="width: 100px;">Price</th>
+                            <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
+                            <th class="text-right py-3 px-4" style="width: 100px;">Total</th>
+                            <th class="text-center align-middle py-3 px-0" style="width: 40px;">
+                                <a href="#" class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart">
+                                    <i class="ino ion-md-trash"></i></a></th>
+                        </tr>
+                    </thead>
+                    {% if total == 0 %}
+                    <tr>
+                        <th colspan="5">Ваша корзина пуста</th>
+                    </tr>
+                    {%else%}
+                    <tbody>
+                        {% for item in cart %}
+                        <tr>
+                            <td class="p-4">
+                                <div class="media align-items-center">
+                                    <img src={{ item.image }} class="d-block ui-w-40 ui-bordered mr-4" alt={{item.name}}>
+                                    <div class="media-body">
+                                        <a href=/{{item.__table__.name}}/{{item.name_id}} class="d-block text-dark">{{ item.name }}</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-right font-weight-semibold align-middle p-4">${{item.price}}</td>
+                            <td class="align-middle p-4">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <form method="post" style="float: center;">
+                                        <input type="hidden" name="action" value={{ item.name_id }}rem>
+                                        {%if sess_cart[item.name_id]["amount"] > 1%}
+                                        <input type="submit" class="btn btn-default btn-sm shop-tooltip close float-none text-danger"
+                                               value="-" align="center">
+                                        {%else%}
+                                        <input type="submit" class="btn btn-default btn-sm shop-tooltip close float-none text-danger"
+                                               value="-" align="center" disabled>
+                                        {%endif%}
+                                    </form>
+                                    <input type="submit" class="btn btn-light" value={{sess_cart[item.name_id]["amount"]}} disabled>
+                                    <form method="post" style="float: center;">
+                                        <input type="hidden" name="action" value={{ item.name_id }}add>
+                                        <input type="submit" class="btn btn-default btn-sm shop-tooltip close float-none text-success"
+                                               value="+" align="center" style="text-color: red;">
+                                    </form>
+                                </div>
+                            </td>
+                            <td class="text-right font-weight-semibold align-middle p-4">${{item.price * sess_cart[item.name_id]["amount"]}}</td>
+                            <td class="text-center align-middle px-0">
+                                <form method="post" style="float: center;">
+                                    <input type="hidden" name="action" value={{ item.name_id }}del>
+                                    <input type="submit" class="btn btn-default shop-tooltip close float-none text-danger"
+                                           value="×" align="center" style="text-color: red;">
+                                </form>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+            <!-- / Shopping cart table -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
+                <div class="mt-4">
+                    <label class="text-muted font-weight-normal">Promocode</label>
+                    <input type="text" placeholder="ABC" class="form-control">
+                </div>
+                <div class="d-flex">
+                    <div class="text-right mt-4 mr-5">
+                        <label class="text-muted font-weight-normal m-0">Discount</label>
+                        <div class="text-large"><strong>$20</strong></div>
+                    </div>
+                    <div class="text-right mt-4">
+                        <label class="text-muted font-weight-normal m-0">Total price</label>
+                        <div class="text-large"><strong>${{total}}</strong></div>
+                    </div>
+                </div>
+            </div>
+            <div class="float-right">
+                <a type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3" href="/">Back to shopping</a>
+                <button type="button" class="btn btn-lg btn-primary mt-2">Checkout</button>
+            </div>
+            {%endif%}
+        </div>
+    </div>
+</div>
+{%endblock%}

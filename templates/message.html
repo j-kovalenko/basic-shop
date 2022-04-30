@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h4 style="text-align: center; margin-top: 50px">{{ text }}</h4>
-<a href="/">Возврат на главную страницу</a>
+<button type="button" class="btn btn-primary" onclick="history.back()" style="margin-bottom: 10px;">Назад</button>
+<br>
+<a href="/">На главную страницу</a>
 {% endblock %}
