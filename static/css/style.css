@@ -22,6 +22,9 @@
 
 body{
     margin-top:20px;
+	min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     /* background:#eee; */
 }
 .ui-w-40 {
@@ -51,6 +54,7 @@ footer {
 	padding-top: 30px;
 	color: #FFFFFF;
 	padding-bottom: 20px;
+	margin-top: auto;
 }
 
 .fa {
