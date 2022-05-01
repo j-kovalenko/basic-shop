@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect
-
+from waitress import serve
 from data import db_session
 from data.hoodies import Hoodie
 from data.tshirts import Tshirt
@@ -9,7 +9,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 db_session.global_init("db/shop.db")
-
 
 
 @app.route('/')
@@ -185,3 +184,4 @@ def accessories():
 if __name__ == '__main__':
     # app.run(port=8080, host='127.0.0.1')
     app.run()
+    # serve(app)
