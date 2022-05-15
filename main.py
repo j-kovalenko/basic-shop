@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, session, redirect
-from waitress import serve
 from data import db_session
 from data.hoodies import Hoodie
 from data.tshirts import Tshirt
