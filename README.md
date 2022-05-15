@@ -8,3 +8,5 @@ basic-shop is a project made for Yandex Lyceum and which presents all functions 
 * [bootstrap](https://getbootstrap.com/)
 * [flask](https://flask.palletsprojects.com/en/2.1.x/)
 * [yandex lyceum](https://academy.yandex.ru/lyceum/)
+## link
+You can find my site via this link: https://basite.herokuapp.com/
